@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "_macros.html" import error_box %}
+{% block title %}{{ 'Edit' if item else 'New' }} control{% endblock %}
+{% block content %}
+<h1>{{ 'Edit control' if item else 'New control' }}</h1>
+<form class="stack" method="post" action="{{ '/controls/%d/edit'|format(item.id) if item else '/controls/new' }}">
+  {{ error_box(error) }}
+  <label for="requirement_id">Requirement</label>
+  <select id="requirement_id" name="requirement_id">
+    <option value="">— select —</option>
+    {% for r in requirements %}
+    <option value="{{ r.id }}" {% if form.requirement_id|string == r.id|string %}selected{% endif %}>{{ r.reference }} · {{ r.title }}</option>
+    {% endfor %}
+  </select>
+  <label for="name">Control name</label>
+  <input id="name" name="name" value="{{ form.name or '' }}">
+  <label for="description">Description</label>
+  <textarea id="description" name="description">{{ form.description or '' }}</textarea>
+  <label for="owner">Control owner</label>
+  <input id="owner" name="owner" value="{{ form.owner or '' }}">
+  <label for="frequency">Frequency</label>
+  <input id="frequency" name="frequency" value="{{ form.frequency or '' }}" placeholder="Quarterly">
+  <label for="status">Status</label>
+  <select id="status" name="status">
+    {% for s in statuses %}<option {% if form.status == s.value %}selected{% endif %}>{{ s.value }}</option>{% endfor %}
+  </select>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

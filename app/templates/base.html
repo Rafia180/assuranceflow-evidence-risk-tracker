@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}AssuranceFlow{% endblock %} · AssuranceFlow</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">AssuranceFlow</div>
+  <nav>
+    <a href="/">Dashboard</a>
+    <a href="/requirements">Requirements</a>
+    <a href="/controls">Controls</a>
+    <a href="/evidence">Evidence</a>
+    <a href="/assessments">Assessments</a>
+    <a href="/findings">Findings</a>
+    <a href="/actions">Actions</a>
+    <a href="/audit-log">Audit log</a>
+  </nav>
+</header>
+<main>
+  <div class="disclaimer">Fictional learning project for Fjordkit Digital A/S (a made-up company).
+    Not a security assessment, compliance certification or production GRC platform.</div>
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

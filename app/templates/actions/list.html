@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Actions{% endblock %}
+{% block content %}
+<h1>Remediation actions</h1>
+<p><a href="/actions">All</a> · <a href="/actions?overdue=true">Overdue only</a></p>
+<div class="table-wrap"><table>
+  <tr><th>Action</th><th>Finding</th><th>Owner</th><th>Target</th><th>Status</th><th>Verification</th></tr>
+  {% for a in items %}
+  <tr class="{{ 'overdue' if is_action_overdue(a) }}"><td>{{ a.action }}</td>
+      <td><a href="/findings/{{ a.finding.id }}">{{ a.finding.title }}</a></td><td>{{ a.owner }}</td>
+      <td>{{ a.target_date }}{% if is_action_overdue(a) %} <span class="badge overdue">Overdue</span>{% endif %}</td>
+      <td>{{ a.status.value }}</td><td>{{ a.verification_notes }}</td></tr>
+  {% else %}<tr><td colspan="6">{{ 'No overdue actions.' if overdue else 'No actions yet.' }}</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Audit log{% endblock %}
+{% block content %}
+<h1>Audit log</h1>
+<p class="muted">Latest 200 create/update events.</p>
+<div class="table-wrap"><table>
+  <tr><th>Time</th><th>Entity</th><th>ID</th><th>Action</th><th>Detail</th></tr>
+  {% for e in entries %}
+  <tr><td>{{ e.timestamp.strftime('%Y-%m-%d %H:%M') }}</td><td>{{ e.entity }}</td><td>{{ e.entity_id }}</td><td>{{ e.action }}</td><td>{{ e.detail }}</td></tr>
+  {% else %}<tr><td colspan="5">No changes recorded yet.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

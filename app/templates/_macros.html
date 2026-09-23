@@ -1,0 +1,7 @@
+{% macro badge(value) -%}
+<span class="badge {{ value|replace(' ', '-') }}">{{ value }}</span>
+{%- endmacro %}
+
+{% macro error_box(error) -%}
+{% if error %}<div class="error">{{ error }}</div>{% endif %}
+{%- endmacro %}

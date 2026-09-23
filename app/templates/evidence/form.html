@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "_macros.html" import error_box %}
+{% block title %}New evidence{% endblock %}
+{% block content %}
+<h1>Record evidence</h1>
+<form class="stack" method="post" action="/evidence/new">
+  {{ error_box(error) }}
+  <label for="control_id">Control</label>
+  <select id="control_id" name="control_id">
+    <option value="">— select —</option>
+    {% for c in controls %}
+    <option value="{{ c.id }}" {% if form.control_id|string == c.id|string %}selected{% endif %}>{{ c.requirement.reference }} · {{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <label for="title">Evidence title</label>
+  <input id="title" name="title" value="{{ form.title or '' }}">
+  <label for="evidence_type">Type</label>
+  <select id="evidence_type" name="evidence_type">
+    {% for t in types %}<option {% if form.evidence_type == t %}selected{% endif %}>{{ t }}</option>{% endfor %}
+  </select>
+  <label for="collection_date">Collection date</label>
+  <input type="date" id="collection_date" name="collection_date" value="{{ form.collection_date or '' }}">
+  <label for="review_date">Review / refresh date (optional)</label>
+  <input type="date" id="review_date" name="review_date" value="{{ form.review_date or '' }}">
+  <label for="owner">Evidence owner</label>
+  <input id="owner" name="owner" value="{{ form.owner or '' }}">
+  <label for="reference_link">Reference / link (text only)</label>
+  <input id="reference_link" name="reference_link" value="{{ form.reference_link or '' }}" placeholder="AUDIT-2026-014 or SharePoint/demo/file.pdf">
+  <p class="muted">Store references only — never upload real or confidential files.</p>
+  <button type="submit">Save evidence</button>
+</form>
+{% endblock %}

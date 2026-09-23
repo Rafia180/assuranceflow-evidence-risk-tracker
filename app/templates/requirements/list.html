@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Requirements{% endblock %}
+{% block content %}
+<h1>Requirements register</h1>
+<a class="button" href="/requirements/new">+ Add requirement</a>
+<div class="table-wrap" style="margin-top:12px"><table>
+  <tr><th>Ref</th><th>Title</th><th>Category</th><th>Owner</th><th>Review</th><th>Controls</th></tr>
+  {% for r in requirements %}
+  <tr><td><a href="/requirements/{{ r.id }}">{{ r.reference }}</a></td><td>{{ r.title }}</td><td>{{ r.category }}</td>
+      <td>{{ r.owner }}</td><td>{{ r.review_frequency }}</td><td>{{ r.controls|length }}</td></tr>
+  {% endfor %}
+</table></div>
+{% endblock %}

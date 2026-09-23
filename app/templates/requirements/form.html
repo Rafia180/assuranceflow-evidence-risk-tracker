@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% from "_macros.html" import error_box %}
+{% block title %}{{ 'Edit' if item else 'New' }} requirement{% endblock %}
+{% block content %}
+<h1>{{ 'Edit ' ~ item.reference if item else 'New requirement' }}</h1>
+<form class="stack" method="post" action="{{ '/requirements/%d/edit'|format(item.id) if item else '/requirements/new' }}">
+  {{ error_box(error) }}
+  <label for="reference">Reference</label>
+  <input id="reference" name="reference" value="{{ form.reference or '' }}" placeholder="REQ-AC-03">
+  <label for="title">Title</label>
+  <input id="title" name="title" value="{{ form.title or '' }}" placeholder="Access must be reviewed quarterly">
+  <label for="category">Category</label>
+  <input id="category" name="category" value="{{ form.category or '' }}" placeholder="Access Management">
+  <label for="description">Description</label>
+  <textarea id="description" name="description">{{ form.description or '' }}</textarea>
+  <label for="owner">Requirement owner</label>
+  <input id="owner" name="owner" value="{{ form.owner or '' }}">
+  <label for="review_frequency">Review frequency</label>
+  <select id="review_frequency" name="review_frequency">
+    {% for f in ['Continuous','Monthly','Quarterly','Semi-annually','Annually'] %}
+    <option {% if form.review_frequency == f %}selected{% endif %}>{{ f }}</option>{% endfor %}
+  </select>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

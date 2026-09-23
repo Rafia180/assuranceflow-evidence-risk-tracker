@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "_macros.html" import error_box %}
+{% block title %}New assessment{% endblock %}
+{% block content %}
+<h1>Record an assessment</h1>
+<form class="stack" method="post" action="/assessments/new">
+  {{ error_box(error) }}
+  <label for="control_id">Control</label>
+  <select id="control_id" name="control_id">
+    <option value="">— select —</option>
+    {% for c in controls %}
+    <option value="{{ c.id }}" {% if form.control_id|string == c.id|string %}selected{% endif %}>{{ c.requirement.reference }} · {{ c.name }}</option>
+    {% endfor %}
+  </select>
+  <label for="assessment_date">Assessment date</label>
+  <input type="date" id="assessment_date" name="assessment_date" value="{{ form.assessment_date or '' }}">
+  <label for="result">Result</label>
+  <select id="result" name="result">
+    {% for r in results %}<option {% if form.result == r.value %}selected{% endif %}>{{ r.value }}</option>{% endfor %}
+  </select>
+  <label for="assessor">Assessor</label>
+  <input id="assessor" name="assessor" value="{{ form.assessor or '' }}">
+  <label for="notes">Notes / what was tested</label>
+  <textarea id="notes" name="notes">{{ form.notes or '' }}</textarea>
+
+  <fieldset>
+    <legend>Finding (required if Not Effective, optional if Partially Effective)</legend>
+    <label for="finding_title">Finding title</label>
+    <input id="finding_title" name="finding_title" value="{{ form.finding_title or '' }}">
+    <label for="finding_description">Gap and impact</label>
+    <textarea id="finding_description" name="finding_description">{{ form.finding_description or '' }}</textarea>
+    <label for="risk_rating">Risk rating</label>
+    <select id="risk_rating" name="risk_rating">
+      {% for r in ratings %}<option {% if form.risk_rating == r.value %}selected{% endif %}>{{ r.value }}</option>{% endfor %}
+    </select>
+    <label for="finding_owner">Finding owner</label>
+    <input id="finding_owner" name="finding_owner" value="{{ form.finding_owner or '' }}">
+    <label for="due_date">Target date</label>
+    <input type="date" id="due_date" name="due_date" value="{{ form.due_date or '' }}">
+  </fieldset>
+  <button type="submit">Save assessment</button>
+</form>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Evidence{% endblock %}
+{% block content %}
+<h1>Evidence register</h1>
+<a class="button" href="/evidence/new">+ Add evidence</a>
+<p class="muted">Red rows are past their review date and need refreshing.</p>
+<div class="table-wrap"><table>
+  <tr><th>Title</th><th>Control</th><th>Type</th><th>Collected</th><th>Review by</th><th>Owner</th><th>Reference</th></tr>
+  {% for e in items %}
+  <tr class="{{ 'overdue' if is_evidence_stale(e) }}"><td>{{ e.title }}</td><td><a href="/controls/{{ e.control.id }}">{{ e.control.name }}</a></td>
+      <td>{{ e.evidence_type }}</td><td>{{ e.collection_date }}</td><td>{{ e.review_date or '—' }}</td><td>{{ e.owner }}</td>
+      <td><code>{{ e.reference_link }}</code></td></tr>
+  {% endfor %}
+</table></div>
+{% endblock %}

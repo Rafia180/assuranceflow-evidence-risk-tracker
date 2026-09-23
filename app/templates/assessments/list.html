@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge %}
+{% block title %}Assessments{% endblock %}
+{% block content %}
+<h1>Assessments</h1>
+<a class="button" href="/assessments/new">+ Record assessment</a>
+<div class="table-wrap" style="margin-top:12px"><table>
+  <tr><th>Date</th><th>Control</th><th>Result</th><th>Assessor</th><th>Notes</th></tr>
+  {% for a in items %}
+  <tr><td>{{ a.assessment_date }}</td><td><a href="/controls/{{ a.control.id }}">{{ a.control.name }}</a></td>
+      <td>{{ badge(a.result.value) }}</td><td>{{ a.assessor }}</td><td>{{ a.notes }}</td></tr>
+  {% endfor %}
+</table></div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ item.reference }}{% endblock %}
+{% block content %}
+<h1>{{ item.reference }} — {{ item.title }}</h1>
+<p><strong>Category:</strong> {{ item.category }} · <strong>Owner:</strong> {{ item.owner }} · <strong>Review:</strong> {{ item.review_frequency }}</p>
+<p>{{ item.description }}</p>
+<a class="button secondary" href="/requirements/{{ item.id }}/edit">Edit</a>
+<a class="button" href="/controls/new?requirement_id={{ item.id }}">+ Add control</a>
+<h2>Controls</h2>
+<div class="table-wrap"><table>
+  <tr><th>Control</th><th>Owner</th><th>Frequency</th><th>Status</th></tr>
+  {% for c in item.controls %}
+  <tr><td><a href="/controls/{{ c.id }}">{{ c.name }}</a></td><td>{{ c.owner }}</td><td>{{ c.frequency }}</td><td>{{ c.status.value }}</td></tr>
+  {% else %}<tr><td colspan="4">No controls yet — this requirement is not covered.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

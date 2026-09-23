@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge %}
+{% block title %}Findings{% endblock %}
+{% block content %}
+<h1>Findings tracker</h1>
+<p>Filter:
+  <a href="/findings">All</a>
+  {% for s in statuses %} · <a href="/findings?status={{ s.value|urlencode }}">{{ s.value }}</a>{% endfor %}
+</p>
+<div class="table-wrap"><table>
+  <tr><th>Finding</th><th>Control</th><th>Risk</th><th>Owner</th><th>Due</th><th>Status</th><th>Actions</th></tr>
+  {% for f in items %}
+  <tr class="{{ 'overdue' if is_finding_overdue(f) }}"><td><a href="/findings/{{ f.id }}">{{ f.title }}</a></td>
+      <td>{{ f.control.name }}</td><td>{{ badge(f.risk_rating.value) }}</td><td>{{ f.owner }}</td>
+      <td>{{ f.due_date }}{% if is_finding_overdue(f) %} <span class="badge overdue">Overdue</span>{% endif %}</td>
+      <td>{{ f.status.value }}</td><td>{{ f.actions|length }}</td></tr>
+  {% else %}<tr><td colspan="7">No findings match.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}

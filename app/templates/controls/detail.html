@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "_macros.html" import badge %}
+{% block title %}{{ item.name }}{% endblock %}
+{% block content %}
+<h1>{{ item.name }}</h1>
+<p><strong>Requirement:</strong> <a href="/requirements/{{ item.requirement.id }}">{{ item.requirement.reference }}</a> {{ item.requirement.title }}</p>
+<p><strong>Owner:</strong> {{ item.owner }} · <strong>Frequency:</strong> {{ item.frequency }} · <strong>Status:</strong> {{ item.status.value }}</p>
+<p>{{ item.description }}</p>
+<a class="button secondary" href="/controls/{{ item.id }}/edit">Edit</a>
+<a class="button" href="/evidence/new?control_id={{ item.id }}">+ Add evidence</a>
+<a class="button" href="/assessments/new?control_id={{ item.id }}">+ Record assessment</a>
+
+<h2>Evidence</h2>
+<div class="table-wrap"><table>
+  <tr><th>Title</th><th>Type</th><th>Collected</th><th>Review by</th><th>Owner</th><th>Reference</th></tr>
+  {% for e in item.evidence_items %}
+  <tr class="{{ 'overdue' if is_evidence_stale(e) }}"><td>{{ e.title }}</td><td>{{ e.evidence_type }}</td><td>{{ e.collection_date }}</td>
+      <td>{{ e.review_date or '—' }}</td><td>{{ e.owner }}</td><td><code>{{ e.reference_link }}</code></td></tr>
+  {% else %}<tr><td colspan="6">No evidence recorded — the control cannot be shown to operate.</td></tr>{% endfor %}
+</table></div>
+
+<h2>Assessments</h2>
+<div class="table-wrap"><table>
+  <tr><th>Date</th><th>Result</th><th>Assessor</th><th>Notes</th></tr>
+  {% for a in item.assessments|sort(attribute='assessment_date', reverse=True) %}
+  <tr><td>{{ a.assessment_date }}</td><td>{{ badge(a.result.value) }}</td><td>{{ a.assessor }}</td><td>{{ a.notes }}</td></tr>
+  {% else %}<tr><td colspan="4">Not assessed yet.</td></tr>{% endfor %}
+</table></div>
+
+<h2>Findings</h2>
+<div class="table-wrap"><table>
+  <tr><th>Finding</th><th>Risk</th><th>Owner</th><th>Due</th><th>Status</th></tr>
+  {% for f in item.findings %}
+  <tr class="{{ 'overdue' if is_finding_overdue(f) }}"><td><a href="/findings/{{ f.id }}">{{ f.title }}</a></td><td>{{ badge(f.risk_rating.value) }}</td>
+      <td>{{ f.owner }}</td><td>{{ f.due_date }}</td><td>{{ f.status.value }}</td></tr>
+  {% else %}<tr><td colspan="5">No findings.</td></tr>{% endfor %}
+</table></div>
+{% endblock %}
